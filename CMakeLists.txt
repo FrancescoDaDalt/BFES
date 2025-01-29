@@ -78,8 +78,8 @@ else()
 endif()
 
 # FIND MOSEK
-set(MOSEK_DIR "/home/francesco-dadalt/Documents/ETH/Coding/MOSEK/mosek/10.2/tools/platform/linux64x86")
-# set(MOSEK_DIR "/opt/mosek/10.0/tools/platform/osxaarch64")
+# set(MOSEK_DIR "/home/francesco-dadalt/Documents/ETH/Coding/MOSEK/mosek/10.2/tools/platform/linux64x86")
+set(MOSEK_DIR "/opt/mosek/10.0/tools/platform/osxaarch64")
 set(MOSEK_INCLUDE_DIR "${MOSEK_DIR}/h/")
 if (APPLE)
     set(MOSEK_LIB "${MOSEK_DIR}/bin/libfusion64.dylib")
@@ -121,7 +121,11 @@ HEADER_DIRECTORIES(BFES_HEADER_DIRS)
 add_executable(BFES main_benchmarking.cpp ${SOURCES})
 
 # Link Libraries
-target_link_libraries(BFES OpenMP::OpenMP_CXX ${LIBOMP_LIBS} ${MOSEK_LIBS} ${GSL_LIBRARIES} Eigen3::Eigen)
+if (APPLE)
+    target_link_libraries(BFES ${LIBOMP_LIBS} ${MOSEK_LIBS} ${GSL_LIBRARIES} Eigen3::Eigen)
+else ()
+    target_link_libraries(BFES OpenMP::OpenMP_CXX ${MOSEK_LIBS} ${GSL_LIBRARIES} Eigen3::Eigen)
+endif()
 
 # Include Headers
 target_include_directories(BFES PUBLIC ${LIBOMP_INCLUDE_DIR} ${BFES_HEADER_DIRS} ${MOSEK_INCLUDE_DIR} ${GSL_INCLUDE_DIRS})
