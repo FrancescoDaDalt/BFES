@@ -40,11 +40,11 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Ofast -march=native -fno-finite-math-only")
 
 # Special OMP Flags
 if(APPLE)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Xclang -fopenmp")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Xclang -fopenmp")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Xclang -fopenmp")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Xclang -fopenmp")
 else()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fopenmp")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fopenmp")
 endif()
 
 # FIND OPENMP
@@ -66,16 +66,20 @@ if(APPLE)
     endif()
 else()
     find_package(OpenMP REQUIRED)
-    if (OpenMP_FOUND)
+    if (OpenMP_CXX_FOUND)
+        set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+        set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
         message(STATUS "OpenMP found")
+        set(LIBOMP_INCLUDE_DIR "")
     else()
         message(FATAL_ERROR "OpenMP library not found")
     endif()
 endif()
 
 # FIND MOSEK
-# set(MOSEK_DIR "/home/francesco-dadalt/Documents/ETH/Coding/MOSEK/mosek/10.2/tools/platform/linux64x86")
-set(MOSEK_DIR "/opt/mosek/10.0/tools/platform/osxaarch64")
+set(MOSEK_DIR "/home/francesco-dadalt/Documents/ETH/Coding/MOSEK/mosek/10.2/tools/platform/linux64x86")
+# set(MOSEK_DIR "/opt/mosek/10.0/tools/platform/osxaarch64")
 set(MOSEK_INCLUDE_DIR "${MOSEK_DIR}/h/")
 if (APPLE)
     set(MOSEK_LIB "${MOSEK_DIR}/bin/libfusion64.dylib")
@@ -117,7 +121,7 @@ HEADER_DIRECTORIES(BFES_HEADER_DIRS)
 add_executable(BFES main_benchmarking.cpp ${SOURCES})
 
 # Link Libraries
-target_link_libraries(BFES ${LIBOMP_LIBS} ${MOSEK_LIBS} ${GSL_LIBRARIES} Eigen3::Eigen)
+target_link_libraries(BFES OpenMP::OpenMP_CXX ${LIBOMP_LIBS} ${MOSEK_LIBS} ${GSL_LIBRARIES} Eigen3::Eigen)
 
 # Include Headers
 target_include_directories(BFES PUBLIC ${LIBOMP_INCLUDE_DIR} ${BFES_HEADER_DIRS} ${MOSEK_INCLUDE_DIR} ${GSL_INCLUDE_DIRS})
