@@ -1,6 +1,10 @@
-*
+Data/*
+out/*
+build/*
+CMakeFiles/*
+*.json
+*.entitlements
 
 !.gitignore
-# !src/CBSketch/CBSketch.hpp
 !CMakeLists.txt
-!main_benchmarking.cpp
+!**/CBSketch.hpp
