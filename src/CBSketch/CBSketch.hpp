@@ -15,7 +15,7 @@
 #include <vector>
 
 #include "distinct_counter.h"
-#include "Murmurhash3.h"
+#include "MurmurHash3.h"
 
 // CHECKED, all good
 template <typename key_type, typename support_type>

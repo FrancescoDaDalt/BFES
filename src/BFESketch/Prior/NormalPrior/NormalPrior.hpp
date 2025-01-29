@@ -51,9 +51,9 @@ public:
 	mu(mu),
 	supp_size(high - low),
 	mu_to_sigma_ratio((mu - low) /sigma) {
-		assert(isfinite(sigma) and std::abs(sigma) > 1e-6);
-		assert(isfinite(low));
-		assert(isfinite(high));
+		assert(std::isfinite(sigma) and std::abs(sigma) > 1e-6);
+		assert(std::isfinite(low));
+		assert(std::isfinite(high));
 		assert(low >=0);
 		assert(sigma >= 0);
 	}

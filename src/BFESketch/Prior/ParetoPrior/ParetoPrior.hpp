@@ -52,9 +52,9 @@ public:
 	}
 	
 	ParetoPrior(supp_t low, supp_t high, double scale, double shape): low(low), high(high), scale(scale), shape(shape), supp_size(high - low), direction((scale > 0) * 2 - 1) {
-		assert(isfinite(scale) and std::abs(scale) > 1e-6);
-		assert(isfinite(low));
-		assert(isfinite(high));
+		assert(std::isfinite(scale) and std::abs(scale) > 1e-6);
+		assert(std::isfinite(low));
+		assert(std::isfinite(high));
 		assert(shape > 2.0);
 	}
 	

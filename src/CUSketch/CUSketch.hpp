@@ -14,7 +14,7 @@
 #include <cmath>
 #include <vector>
 
-#include "Murmurhash3.h"
+#include "MurmurHash3.h"
 
 
 // CHECKED, all good

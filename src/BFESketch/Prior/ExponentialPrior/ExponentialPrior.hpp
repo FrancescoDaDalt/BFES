@@ -175,9 +175,9 @@ public:
 	}
 	
 	ExponentialPrior(supp_t low, supp_t high, supp_t scale): low(low), high(high), scale(scale), supp_size(high - low), direction((scale > 0) * 2 - 1) {
-		assert(isfinite(scale) and std::abs(scale) > 1e-6);
-		assert(isfinite(low));
-		assert(isfinite(high));
+		assert(std::isfinite(scale) and std::abs(scale) > 1e-6);
+		assert(std::isfinite(low));
+		assert(std::isfinite(high));
 	}
 	
 	const std::pair<supp_t, supp_t> get_bounds() const {

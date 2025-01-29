@@ -17,7 +17,7 @@
 #include <Eigen/Sparse>
 #include <Eigen/Dense>
 
-#include "Murmurhash3.h"
+#include "MurmurHash3.h"
 #include "distinct_counter.h"
 
 

@@ -20,7 +20,7 @@
 #include <gsl/gsl_sf_bessel.h>
 #include <gsl/gsl_integration.h>
 
-#include "Murmurhash3.h"
+#include "MurmurHash3.h"
 
 template <typename key_type, typename support_type>
 class NIGPSketch {

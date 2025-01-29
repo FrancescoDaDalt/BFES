@@ -18,7 +18,7 @@
 #include <gsl/gsl_min.h>
 #include <gsl/gsl_sf_gamma.h>
 
-#include "Murmurhash3.h"
+#include "MurmurHash3.h"
 
 template <typename key_type, typename support_type>
 class DPSketch {

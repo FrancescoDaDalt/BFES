@@ -19,7 +19,7 @@
 
 #include <gsl/gsl_cdf.h>
 
-#include "Murmurhash3.h"
+#include "MurmurHash3.h"
 #include "fusion.h"
 
 namespace msk = mosek::fusion;
