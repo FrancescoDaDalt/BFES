@@ -9,6 +9,7 @@
 #define InitialPoint_hpp
 
 #include <Eigen/Dense>
+#ifndef NO_MOSEK
 #include "fusion.h"
 
 namespace msk = mosek::fusion;
@@ -16,6 +17,7 @@ namespace mty = monty;
 
 std::shared_ptr<mty::ndarray<int,1>> nint(const std::vector<int> &X);
 std::shared_ptr<mty::ndarray<double,1>> ndou(const std::vector<double> &X);
+#endif
 
 // Used to compute initial points for level-2 gibbs sampling. This solver is implemented manually for high performance since the problem to be solved is very simple
 template<size_t targetSpace_size, class prior_type, typename counter_type, typename rng_type, typename anchor_type>
@@ -63,6 +65,7 @@ void simple_initial_point (const counter_type counter,
 	}
 }
 
+#ifndef NO_MOSEK
 // Used to compute level-1 initial points for gibbs sampling. Solving this problem is not trivial in general so we use MOSEK to solve it
 template<class sensor_type, class prior_type, size_t num_anchors, size_t num_threads, typename counter_type, typename rng_type>
 void multiple_random_initial_points(const sensor_type* const sensor,
@@ -160,5 +163,6 @@ void multiple_random_initial_points(const sensor_type* const sensor,
 		*ans = aStar_eigen.round().template cast<supp_t>();
 	}
 }
+#endif
 
 #endif /* InitialPoint_hpp */

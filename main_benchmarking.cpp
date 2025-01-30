@@ -16,7 +16,9 @@
 #include "CSketch.hpp"
 #include "CUSketch.hpp"
 #include "PRSketch.hpp"
+#ifndef NO_MOSEK
 #include "SeqSketch.hpp"
+#endif
 #include "CCBSketch.hpp"
 
 #include "EstimationAnalysis.hpp"
@@ -52,6 +54,9 @@ int main(int argc, const char * argv[]) {
 	constexpr size_t numsamples_max = 1000;
 	constexpr bool bypassTopLevel = false;
 	using hypergrid_type = hypergrid<2>;
+	#ifdef NO_MOSEK
+	static_assert((hypergrid_type::num_axes == 1) and "If MOSEK is not provided, need to change the number of axes in the hypergrid to 1: using hypergrid_type = hypergrid<1>;");
+	#endif
 	
 	const int numruns = 10;
 	const bool use_synthetic_data = true;
@@ -78,8 +83,10 @@ int main(int argc, const char * argv[]) {
 	DumpContainer cus_dump("CUSketch_" + commondescription, 10);
 	DumpContainer prs_dump("PRSketch_" + commondescription, 10);
 	DumpContainer prsn_dump("PRSketch_Native_" + commondescription, 10);
+	#ifndef NO_MOSEK
 	DumpContainer seqs_dump("SeqSketch_" + commondescription, 10);
 	DumpContainer seqsn_dump("SeqSketch_Native_" + commondescription, 10);
+	#endif
 	DumpContainer ccbs_dump("CCBSketch_" + commondescription, 10);
 	DumpContainer ccbsn_dump("CCBSketch_Native_" + commondescription, 10);
 	
@@ -487,6 +494,7 @@ int main(int argc, const char * argv[]) {
 		delete get<1>(prsn_query_ans);
 		if (get<1>(prsn_query_ans) != get<2>(prsn_query_ans)) {delete get<2>(prsn_query_ans);}
 
+		#ifndef NO_MOSEK
 //		SeqS
 //		Initialization
 		SeqSketch<int, double> seqs(num_memory_cells);
@@ -550,7 +558,7 @@ int main(int argc, const char * argv[]) {
 		delete get<0>(seqsn_query_ans);
 		delete get<1>(seqsn_query_ans);
 		if (get<1>(seqsn_query_ans) != get<2>(seqsn_query_ans)) {delete get<2>(seqsn_query_ans);}
-		
+		#endif
 //		CCBS
 //		Initialization
 		CCBSketch<int, double> ccbs(num_memory_cells);
@@ -628,8 +636,10 @@ int main(int argc, const char * argv[]) {
 //	cus_dump.dump_to_csv();
 //	prs_dump.dump_to_csv();
 //	prsn_dump.dump_to_csv();
+#ifndef NO_MOSEK
 //	seqs_dump.dump_to_csv();
 //	seqsn_dump.dump_to_csv();
+#endif
 //	ccbs_dump.dump_to_csv();
 //	ccbsn_dump.dump_to_csv();
 

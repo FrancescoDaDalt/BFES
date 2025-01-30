@@ -14,6 +14,7 @@
 #include "HyperplaneSensor.hpp"
 #include "LatentBase.hpp"
 
+#include <iostream>
 #include <thread>
 #include <omp.h>
 
@@ -139,6 +140,7 @@ public:
 //		If we have as many counters as bins d then we assume the matrix H is an identity matrix and no level-1 MCMC is necessary.
 //		If d is greater than the number of counters, we perform level-1 MCMC
 		if (hg.num_counters != hg.num_nodes) {
+			#ifndef NO_MOSEK
 //			Find num_threads many random initial points for the level-1 MCMC. We then start num_threads many MCMC chains i parallel
 			Eigen::Array<support_type, Eigen::Dynamic, Eigen::Dynamic> initial_points;
 			multiple_random_initial_points<senssys_type, level1_prior_type, num_threads, num_threads>(&sensor,
@@ -157,6 +159,7 @@ public:
 		    gibbs_container.sample(level1_prior, level1_period, level1_samples);
 //			Retrieve generates samples (parallel)
 			gibbs_container.get_samples(&firstLevel_samples);
+			#endif
 		} else {
 //			No MCMC required as the only possible value for the d bins is equal to the d counters
 			firstLevel_samples = counters_eigen;
@@ -251,7 +254,7 @@ public:
 				const double bin_n = (cardianlity_estimate - 1);
 //				Compute probability of no collisions. This will be infinitesimally small for cases in which n>>d but it is very necessary when n is not much bigger than d
 				const double probability_nocollision_bin = gsl_ran_binomial_pdf(0, bin_p, bin_n);
-//				We treat the cases where there are no collisions and at least one collision separately. Here we adjust expectation and variance assuming we have more than zero collisions. The equatiosn are based onsimple probability formulas
+//				We treat the cases where there are no collisions and at least one collision separately. Here we adjust expectation and variance assuming we have more than zero collisions. The equatiosn are based on simple probability formulas
 				const double variance_numCollisions_nocollisionExcluded = ((variance_numCollisions_final + expected_numCollisions_final * expected_numCollisions_final) - expected_numCollisions_final * expected_numCollisions_final / (1 - probability_nocollision_bin)) / (1 - probability_nocollision_bin);
 				const double expected_numCollisions_nocollisionExcluded = expected_numCollisions_final / (1 - probability_nocollision_bin);
 //				Assumign at least one collision, estimate the mean of \sum_i^N X_i
