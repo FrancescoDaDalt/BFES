@@ -4,7 +4,3 @@ build/*
 CMakeFiles/*
 *.json
 *.entitlements
-
-!.gitignore
-!CMakeLists.txt
-!**/CBSketch.hpp
