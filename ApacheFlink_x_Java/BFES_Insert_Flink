@@ -1,0 +1,30 @@
+import org.apache.flink.api.common.functions.RichMapFunction;
+import org.apache.flink.streaming.api.functions.keyed.KeyedProcessFunction;
+import org.apache.flink.streaming.api.scala.KeyedStream;
+import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment;
+import org.apache.flink.util.Collector;
+import org.apache.datasketches.hll.HllSketch;
+
+// It takes in Key-value pairs and returns at the end the sketch datastructure (bytearray containing the all relevant sketch data and a string describing metadata) which must be processed in C++
+public class BFESFunction <K, V> extends KeyedProcessFunction<K, V, BFES_Snapshot> {
+
+    private BFES <K, V> bfes;
+
+    @Override
+    public void open(Configuration parameters) {
+        this.bfes = new BFES(num_counters, depth);
+    }
+
+    @Override
+    public void processElement(V value, Context ctx, Collector<BFES_Snapshot> out) throws Exception {
+        K key = ctx.getCurrentKey();
+        bfes.insert(key, value);
+    }
+
+    @Override
+    public void onTimer(long timestamp, OnTimerContext ctx, Collector<BFES_Snapshot> out) {
+        BFES_Snapshot snapshot = bfes.getSnapshot();
+        snapshot.name = timestamp.toString() + snapshot.name;
+        out.collect(snapshot);
+    }
+}
