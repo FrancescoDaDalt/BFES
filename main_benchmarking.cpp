@@ -53,7 +53,7 @@ int main(int argc, const char * argv[]) {
 	constexpr size_t fPlusOne = 5;
 	constexpr size_t numsamples_max = 1000;
 	constexpr bool bypassTopLevel = false;
-	using hypergrid_type = hypergrid<2>;
+	using hypergrid_type = hypergrid<1>;
 	#ifdef NO_MOSEK
 	static_assert((hypergrid_type::num_axes == 1) and "If MOSEK is not provided, need to change the number of axes in the hypergrid to 1: using hypergrid_type = hypergrid<1>;");
 	#endif

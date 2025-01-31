@@ -3,7 +3,6 @@ import org.apache.flink.streaming.api.functions.keyed.KeyedProcessFunction;
 import org.apache.flink.streaming.api.scala.KeyedStream;
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
-import org.apache.datasketches.hll.HllSketch;
 
 // It takes in Key-value pairs and returns at the end the sketch datastructure (bytearray containing the all relevant sketch data and a string describing metadata) which must be processed in C++
 public class BFESFunction <K, V> extends KeyedProcessFunction<K, V, BFES_Snapshot> {

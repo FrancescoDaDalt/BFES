@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+    <modelVersion>4.0.0</modelVersion>
+  
+    <groupId>FlinkBFESTest</groupId> 
+    <artifactId>FlinkBFES-job</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  
+    <!-- Dependencies -->
+    <dependencies>
+        <!-- Flink dependencies -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-java</artifactId>
+            <version>1.16.1</version> <!-- Use the version you want -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-java_2.11</artifactId>
+            <version>1.16.1</version> <!-- Use the version that matches flink-java -->
+        </dependency>
+        <!-- Scala API for Flink (if you're using Scala-based APIs) -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-scala_2.11</artifactId>
+            <version>1.16.1</version>
+        </dependency>
+
+        <!-- DataSketches (for HllSketch) -->
+        <dependency>
+            <groupId>org.apache.datasketches</groupId>
+            <artifactId>datasketches-hll</artifactId>
+            <version>2.0.0</version> <!-- Version of DataSketches, update if needed -->
+        </dependency>
+
+        <!-- For ByteBuffer, ObjectOutputStream, and other Java IO classes (Java standard library) -->
+        <!-- No need to add any dependencies as these are part of the standard Java SDK -->
+
+    </dependencies>
+  
+    <!-- Build and plugin configuration -->
+    <build>
+        <plugins>
+            <!-- Maven compiler plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source> <!-- Set Java version (Java 1.8 or above) -->
+                    <target>1.8</target> <!-- Set Java version -->
+                </configuration>
+            </plugin>
+            <!-- Package the project into a JAR file -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+  
+</project>
