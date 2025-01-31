@@ -69,7 +69,6 @@ public:
 	primary_memory_cells(nummemorycells - (int) 4 * std::log2(nummemorycells)),
 	secondary_memory_cells(nummemorycells - primary_memory_cells),
 	hg(array_aux<hypergrid_type::num_axes>(primary_memory_cells - 2 * (hypergrid_type::num_axes - 1), 2)),
-//	hg(std::array<size_t, hypergrid_type::num_axes>{primary_memory_cells / hypergrid_type::num_axes}),
 	sensor(hg, secondary_memory_cells),
 	hlbd(hg),
 	gse(&hlbd),
