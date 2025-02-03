@@ -78,9 +78,7 @@ else()
 endif()
 
 # FIND MOSEK
-# set(MOSEK_DIR "/home/francesco-dadalt/Documents/ETH/Coding/MOSEK/mosek/10.2/tools/platform/linux64x86")
 set(MOSEK_DIR "/opt/mosek/10.0/tools/platform/arch")
-# set(MOSEK_DIR "/opt/mosek/10.0/tools/platform/osxaarch64")
 find_path(MOSEK_INCLUDE_DIR NAMES fusion.h PATHS "${MOSEK_DIR}/h/")
 if (APPLE)
     find_file(MOSEK_LIB NAMES libfusion64.dylib PATHS "${MOSEK_DIR}/bin/")
