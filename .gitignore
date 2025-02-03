@@ -2,6 +2,6 @@ Data/*
 out/*
 build/*
 CMakeFiles/*
-ApacheFlink_x_Java/target/*
+*.class
 *.json
 *.entitlements
