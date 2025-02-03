@@ -10,8 +10,8 @@ RUN apt-get update && apt-get install -y \
     libgsl-dev \
     wget \
     unzip \
-    openjdk-11-jdk \
-    mvn \
+    openjdk-17-jdk \
+    maven \
     nano \
     && rm -rf /var/lib/apt/lists/*
 

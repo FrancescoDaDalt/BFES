@@ -1,38 +1,53 @@
-import org.apache.flink.api.common.functions.RuntimeContext;
-import org.apache.flink.api.java.tuple.Tuple2;
+package FlinkBFESTest;
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
-import org.apache.flink.streaming.api.windowing.time.Time;
-import org.apache.flink.streaming.api.collector.selector.OutputTag;
-import org.apache.flink.streaming.api.datastream.KeyedStream;
+import org.apache.flink.util.Collector;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.util.OutputTag;
+import java.lang.Integer;
+
+import java.util.Properties;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FlinkBFESTest {
 
     public static void main(String[] args) throws Exception {
-        // Set up the execution environment
+        // Set up the streaming execution environment
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // Create a sample toy data stream of Key-Value pairs (e.g., String as key and Integer as value)
-        DataStream<Tuple2<String, Integer>> sourceStream = env.fromElements(
-            Tuple2.of("key1", 1),
-            Tuple2.of("key1", 2),
-            Tuple2.of("key2", 3),
-            Tuple2.of("key1", 4),
-            Tuple2.of("key2", 5),
-            Tuple2.of("key3", 6)
-        );
+        List<String> elements = new ArrayList<>();
+        for (int i = 0; i < 1000000; i++) {
+            elements.add("key" + (i % 1000) + ":" + (i % 42));
+        }
 
-        // Key the stream by the key (first element of Tuple2)
-        KeyedStream<Tuple2<String, Integer>, String> keyedStream = sourceStream.keyBy(value -> value.f0);
+        // Create a source (this example uses a flatMap for generating dummy data;
+        // replace with a real Kafka source or other)
+        DataStream<String> source = env.fromCollection(elements);
+
+        // Transform the stream into tuples of key-value pairs
+        DataStream<Tuple2<String, Integer>> keyValueStream = source.flatMap(
+                new FlatMapFunction<String, Tuple2<String, Integer>>() {
+                    @Override
+                    public void flatMap(String value, Collector<Tuple2<String, Integer>> out) {
+                        String[] parts = value.split(":");
+                        out.collect(new Tuple2<String, Integer>(parts[0], Integer.parseInt(parts[1])));
+                    }
+                });
 
         // Apply the BFESFunction
-        DataStream<BFES_Snapshot> resultStream = keyedStream.process(new BFESFunction<String, Integer>());
+        DataStream<BFES_Snapshot> result = keyValueStream.keyBy(t -> t.f0)
+                .process(new BFESFunction<String, Integer>(100, 2));
 
-        // Print the result stream (you can replace this with a sink to save the output)
-        resultStream.print();
+        // Output
+        result.print();
 
         // Execute the Flink job
-        env.execute("BFES Function Test");
+        env.execute("BFES Function Example");
     }
 }

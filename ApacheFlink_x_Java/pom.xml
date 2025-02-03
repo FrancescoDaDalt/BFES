@@ -11,34 +11,27 @@
   
     <!-- Dependencies -->
     <dependencies>
-        <!-- Flink dependencies -->
+        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-java -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-java</artifactId>
-            <version>1.16.1</version> <!-- Use the version you want -->
-        </dependency>
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-streaming-java_2.11</artifactId>
-            <version>1.16.1</version> <!-- Use the version that matches flink-java -->
-        </dependency>
-        <!-- Scala API for Flink (if you're using Scala-based APIs) -->
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-streaming-scala_2.11</artifactId>
-            <version>1.16.1</version>
+            <version>1.20.0</version>
         </dependency>
 
-        <!-- DataSketches (for HllSketch) -->
+        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-streaming-java -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-java</artifactId>
+            <version>1.20.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.datasketches/datasketches-java -->
         <dependency>
             <groupId>org.apache.datasketches</groupId>
-            <artifactId>datasketches-hll</artifactId>
-            <version>2.0.0</version> <!-- Version of DataSketches, update if needed -->
+            <artifactId>datasketches-java</artifactId>
+            <version>7.0.0</version>
         </dependency>
-
-        <!-- For ByteBuffer, ObjectOutputStream, and other Java IO classes (Java standard library) -->
-        <!-- No need to add any dependencies as these are part of the standard Java SDK -->
-
     </dependencies>
   
     <!-- Build and plugin configuration -->
@@ -65,6 +58,16 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <archive>
+                                <manifest>
+                                    <mainClass>FlinkBFESTest.FlinkBFESTest</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
