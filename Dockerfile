@@ -45,5 +45,4 @@ WORKDIR /app/build
 RUN cmake .. && make -j$(nproc)
 
 # Set default command
-# CMD ["./BFES"]
 CMD ["/bin/bash"]

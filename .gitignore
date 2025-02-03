@@ -2,6 +2,9 @@ Data/*
 out/*
 build/*
 CMakeFiles/*
-*.class
+ApacheFlink_x_Java/target/classes/FlinkBFESTest/*
+ApacheFlink_x_Java/target/test-classes/*
+ApacheFlink_x_Java/target/*
+
 *.json
 *.entitlements

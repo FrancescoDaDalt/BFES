@@ -36,9 +36,6 @@ public class BFESFunction<K, V extends Number> extends ProcessFunction<Tuple2<K,
             ctx.timerService().registerProcessingTimeTimer(tm);
             this.timerSet = true;
         }
-        // BFES_Snapshot snapshot = bfes.getSnapshot();
-        // snapshot.name = String.valueOf(timestamp) + "_" + snapshot.name;
-        // out.collect(snapshot);
     }
 
     @Override
@@ -47,5 +44,6 @@ public class BFESFunction<K, V extends Number> extends ProcessFunction<Tuple2<K,
         snapshot.name = String.valueOf(timestamp) + "_" + snapshot.name;
         out.collect(snapshot);
         this.timerSet = false;
+        this.bfes.clear();
     }
 }

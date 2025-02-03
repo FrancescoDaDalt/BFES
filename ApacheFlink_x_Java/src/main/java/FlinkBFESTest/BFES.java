@@ -45,6 +45,14 @@ public class BFES<K, V extends Number> {
         return length;
     }
 
+    public void clear () {
+        for (int i = 0; i < num_counters; i++) {
+            this.sketch.set(i, (V) (Number) 0.0);
+        }
+        this.total = (V) (Number) 0.0;
+        this.hll = new HllSketch(lgK);
+    }
+
     public void insert(K raw_key, V value) {
         this.total = (V) (Number) (this.total.doubleValue() + value.doubleValue());
 

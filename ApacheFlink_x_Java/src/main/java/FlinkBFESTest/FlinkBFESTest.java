@@ -28,6 +28,7 @@ public class FlinkBFESTest {
 
         // Create a source (this example uses a flatMap for generating dummy data;
         // replace with a real Kafka source or other)
+        @SuppressWarnings("deprecation")
         DataStream<String> source = env.fromCollection(elements);
 
         // Transform the stream into tuples of key-value pairs
@@ -41,9 +42,10 @@ public class FlinkBFESTest {
                 });
 
         // Apply the BFESFunction
+        @SuppressWarnings("deprecation")
         DataStream<BFES_Snapshot> result = keyValueStream.keyBy(t -> t.f0)
                 .process(new BFESFunction<String, Integer>(100, 2));
-
+        
         // Output
         result.print();
 
