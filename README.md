@@ -4,6 +4,8 @@ This repository contains all code related to the publication of the BFES algorit
 The primarly language is C++ since it yields the highest performance and flexibility under reasonable development time. It furthermore ensures an even playfield for the various benchmarked algorithms since they vary significantly in complexity.
 A secondary implementation of the BFES insertion routine is provided in Java for interoperation with Apache Flink.
 
+Regarding licenses, see each file. Broadly speaking, all code written by the main author is under MIT-license with exception of other people's algorithms (see references) to which some other license may apply.
+
 # Prerequisites
 
 Download this repository and navigate to the directory containing this file.
